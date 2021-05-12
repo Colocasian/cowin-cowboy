@@ -14,6 +14,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-__all__ = ["API_URL"]
+__all__ = ["API_URL", "USER_AGENT"]
 
 API_URL: str = "https://cdn-api.co-vin.in/api/"
+USER_AGENT: str = "Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US; rv:1.9.1.5)"

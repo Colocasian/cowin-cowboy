@@ -14,15 +14,12 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-from requests_toolbelt import sessions, user_agent
+from requests_toolbelt import sessions
 from requests_toolbelt.cookies.forgetful import ForgetfulCookieJar
 
 from pub_checker.config import *
 
 # Initialise a forgetful session with base URL
 pub_api_session = sessions.BaseUrlSession(base_url=API_URL)
-pub_api_session.headers = {
-    "Accept": "application/json",
-    "User-Agent": "Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US; rv:1.9.1.5)"
-}
+pub_api_session.headers = {"Accept": "application/json", "User-Agent": USER_AGENT}
 pub_api_session.cookies = ForgetfulCookieJar()
