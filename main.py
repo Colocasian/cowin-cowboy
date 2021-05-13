@@ -30,8 +30,13 @@ if __name__ == "__main__":
         prog="cowin-cowboy",
         description="Checks for available vaccination slots via Co-WIN API",
     )
-    parser.add_argument("-l", "--log", default=logging.getLevelName(logging.ERROR))
-    parser.add_argument("-c", "--config")
+    parser.add_argument(
+        "-l",
+        "--log",
+        default=logging.getLevelName(logging.ERROR),
+        help="set logging verbosity (defaults to ERROR)",
+    )
+    parser.add_argument("-c", "--config", help="path to custom config file")
 
     args = parser.parse_args()
 
