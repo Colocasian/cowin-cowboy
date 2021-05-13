@@ -16,7 +16,6 @@
 
 __all__ = ["check_available_slots"]
 
-from typing import List
 from utils.api_utils import (
     date_to_string,
     check_for_pincode,
