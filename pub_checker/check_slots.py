@@ -22,7 +22,6 @@ from utils.api_utils import (
     check_for_district,
     check_for_center,
 )
-
 from pub_checker import pub_api_session
 
 

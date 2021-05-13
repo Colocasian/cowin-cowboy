@@ -14,9 +14,18 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-import logging
+__all__ = [
+    "date_to_string",
+    "check_for_pincode",
+    "check_for_district",
+    "check_for_center",
+]
+
+from logging import getLogger
 from json import JSONDecodeError
 from zoneinfo import ZoneInfo
+
+_logger = getLogger(__name__)
 
 
 def date_to_string(date):
@@ -58,15 +67,15 @@ def check_for_pincode(date_str, pincode, api_session):
             center_list = r.json().get("centers", [])
             return {center["center_id"]: center for center in center_list}
         except JSONDecodeError:
-            logging.warning(
-                "error while decoding JSON for pincode '{}'".format(pincode)
-            )
+            _logger.warning("Error while decoding JSON for PIN code '{}'".format(pincode))
+            _logger.debug("Response:\n".format(r.content))
     else:
-        logging.warning(
-            "HTTP status code {}: error response for pincode '{}'".format(
+        _logger.warning(
+            "HTTP status code {}: error response for PIN code '{}'".format(
                 r.status_code, pincode
             )
         )
+        _logger.debug("Response:\n".format(r.content))
 
     return {}
 
@@ -93,15 +102,17 @@ def check_for_district(date_str, district_id, api_session):
             center_list = r.json().get("centers", [])
             return {center["center_id"]: center for center in center_list}
         except JSONDecodeError:
-            logging.warning(
-                "error while decoding JSON for district ID {}".format(district_id)
+            _logger.warning(
+                "Error while decoding JSON for district ID {}".format(district_id)
             )
+            _logger.debug("Response:\n".format(r.content))
     else:
-        logging.warning(
+        _logger.warning(
             "HTTP status code {}: error response for district ID {}".format(
                 r.status_code, district_id
             )
         )
+        _logger.debug("Response:\n".format(r.content))
 
     return {}
 
@@ -127,14 +138,16 @@ def check_for_center(date_str, center_id, api_session):
         try:
             return r.json()
         except JSONDecodeError:
-            logging.warning(
-                "error while decoding JSON for center ID {}".format(center_id)
+            _logger.warning(
+                "Error while decoding JSON for center ID {}".format(center_id)
             )
+            _logger.debug("Response:\n".format(r.content))
     else:
-        logging.warning(
+        _logger.warning(
             "HTTP status code {}: error response for center ID {}".format(
                 r.status_code, center_id
             )
         )
+        _logger.debug("Response:\n".format(r.content))
 
     return None
