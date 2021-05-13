@@ -27,19 +27,18 @@ from utils.api_utils import (
 from pub_checker import pub_api_session
 
 
-def check_available_slots(date, pincodes=None, district_ids=None, center_ids=None):
+def check_available_slots(date, locations):
     """Returns a dict of available vaccination centers for a given week
 
     :param date: The first day of the week to check
     :type date: datetime.datetime
-    :param pincodes: List of PIN codes to check
-    :type pincodes: List[str]
-    :param district_ids: List of district IDs to check
-    :type district_ids: List[int]
-    :param center_ids: List of center IDs to check. Note: Center API is
-                       just a draft as of now, API request will return
-                       '401 Forbidden: Unauthorised access!'
-    :type center_ids: List[int]
+    :param locations: A dictionary containing the list of PIN codes at
+            key `pincodes`, list of district IDs at key
+            `district_ids`, and list of center IDs at key
+            `center_ids`. Note: Center API is just a draft as of now,
+            API request will return '401 Forbidden: Unauthorised
+            access!'
+    :type locations: dict
 
     :return: A dictionary of center ID -> center details
     :rtype:  dict[int, dict]
@@ -47,17 +46,18 @@ def check_available_slots(date, pincodes=None, district_ids=None, center_ids=Non
     center_dict = {}
     date_str = date_to_string(date)
 
-    if pincodes is not None:
+    if locations is not None:
+        pincodes = locations.get("pincodes", [])
         for pincode in pincodes:
             center_dict.update(check_for_pincode(date_str, pincode, pub_api_session))
 
-    if district_ids is not None:
+        district_ids = locations.get("district_ids", [])
         for district_id in district_ids:
             center_dict.update(
                 check_for_district(date_str, district_id, pub_api_session)
             )
 
-    if center_ids is not None:
+        center_ids = locations.get("center_ids", [])
         for center_id in center_ids:
             if center_id not in center_dict:
                 center_details = check_for_center(date_str, center_id, pub_api_session)
