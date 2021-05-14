@@ -25,11 +25,11 @@ from cowin_cowboy.utils.api_utils import (
 from cowin_cowboy.pub_checker._api_session import pub_api_session
 
 
-def check_available_slots(date, locations):
+def check_available_slots(date_obj, locations):
     """Returns a dict of available vaccination centers for a given week
 
-    :param date: The first day of the week to check
-    :type date: datetime.datetime
+    :param date_obj: The first day of the week to check
+    :type date_obj: datetime.date
     :param locations: A dictionary containing the list of PIN codes at
             key `pincodes`, list of district IDs at key
             `district_ids`, and list of center IDs at key
@@ -42,7 +42,7 @@ def check_available_slots(date, locations):
     :rtype:  dict[int, dict]
     """
     center_dict = {}
-    date_str = date_to_string(date)
+    date_str = date_to_string(date_obj)
 
     if locations is not None:
         pincodes = locations.get("pincodes", [])

@@ -15,7 +15,7 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 from argparse import ArgumentParser
-from datetime import datetime
+from datetime import date
 from json import dumps
 import logging
 from os import path
@@ -63,7 +63,7 @@ if __name__ == "__main__":
         if "locations" in config:
             locations = config["locations"]
             logger.info("Checking API for available centers...")
-            available_centers = check_available_slots(datetime.now(), locations)
+            available_centers = check_available_slots(date.today(), locations)
         else:
             logger.error('"locations" key not found in config')
             sys.exit(1)

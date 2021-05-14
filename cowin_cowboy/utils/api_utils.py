@@ -27,7 +27,6 @@ __all__ = [
 from enum import Enum, unique
 from json import JSONDecodeError
 from logging import getLogger
-from zoneinfo import ZoneInfo
 
 _logger = getLogger(__name__)
 
@@ -38,21 +37,16 @@ class FeeType(Enum):
     PAID = "Paid"
 
 
-def date_to_string(date):
-    """Converts a datetime object to a string compatible with the Co-WIN
-    API.
-    Converts the timezone to Asia/Kolkata if `date.tz` is not `None`.
+def date_to_string(date_obj):
+    """Converts a `date` object to a string compatible with the Co-WIN
+    API. Note: Co-WIN API expects date according to IST (Asia/Kolkata)
 
-    :param date: the datetime instance
-    :type date: datetime.datetime
-
+    :param date_obj: the datetime instance
+    :type date_obj: datetime.date
     :return: Date string in DD-MM-YYYY format
     :rtype: str
     """
-    date_format = "%d-%m-%Y"
-    if date.tzinfo is not None:
-        return date.astimezone(ZoneInfo("Asia/Kolkata")).strftime(date_format)
-    return date.strftime(date_format)
+    return date_obj.strftime("%d-%m-%Y")
 
 
 def check_for_pincode(date_str, pincode, api_session):

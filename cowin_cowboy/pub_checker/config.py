@@ -16,5 +16,5 @@
 
 __all__ = ["API_URL", "USER_AGENT"]
 
-API_URL: str = "https://cdn-api.co-vin.in/api/"
-USER_AGENT: str = "Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US; rv:1.9.1.5)"
+API_URL = "https://cdn-api.co-vin.in/api/"
+USER_AGENT = "Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US; rv:1.9.1.5)"
