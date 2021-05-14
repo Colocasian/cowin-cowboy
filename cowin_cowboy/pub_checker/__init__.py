@@ -17,7 +17,7 @@
 from requests_toolbelt import sessions
 from requests_toolbelt.cookies.forgetful import ForgetfulCookieJar
 
-from pub_checker.config import *
+from cowin_cowboy.pub_checker.config import *
 
 # Initialise a forgetful session with base URL
 pub_api_session = sessions.BaseUrlSession(base_url=API_URL)

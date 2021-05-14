@@ -22,9 +22,9 @@ from os import path
 import sys
 
 from appdirs import user_config_dir
-from pub_checker.check_slots import check_available_slots
-from filters import filter_available_centers
-from utils.json_utils import read_json_file
+from cowin_cowboy.pub_checker.check_slots import check_available_slots
+from cowin_cowboy.filters import filter_available_centers
+from cowin_cowboy.utils.json_utils import read_json_file
 
 if __name__ == "__main__":
     parser = ArgumentParser(

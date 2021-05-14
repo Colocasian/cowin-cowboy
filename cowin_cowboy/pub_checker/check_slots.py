@@ -16,13 +16,13 @@
 
 __all__ = ["check_available_slots"]
 
-from utils.api_utils import (
+from cowin_cowboy.utils.api_utils import (
     date_to_string,
     check_for_pincode,
     check_for_district,
     check_for_center,
 )
-from pub_checker import pub_api_session
+from cowin_cowboy.pub_checker import pub_api_session
 
 
 def check_available_slots(date, locations):
