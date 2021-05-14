@@ -22,7 +22,7 @@ from cowin_cowboy.utils.api_utils import (
     check_for_district,
     check_for_center,
 )
-from cowin_cowboy.pub_checker import pub_api_session
+from cowin_cowboy.pub_checker._api_session import pub_api_session
 
 
 def check_available_slots(date, locations):

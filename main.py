@@ -22,7 +22,7 @@ from os import path
 import sys
 
 from appdirs import user_config_dir
-from cowin_cowboy.pub_checker.check_slots import check_available_slots
+from cowin_cowboy.pub_checker import check_available_slots
 from cowin_cowboy.filters import filter_available_centers
 from cowin_cowboy.utils.json_utils import read_json_file
 
