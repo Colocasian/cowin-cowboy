@@ -19,7 +19,7 @@ __all__ = ["filter_available_centers"]
 from copy import deepcopy
 from logging import getLogger
 
-from cowin_cowboy.utils.api_utils import is_valid_center
+from cowin_cowboy.filters.checks import is_valid_center
 
 _logger = getLogger(__name__)
 
