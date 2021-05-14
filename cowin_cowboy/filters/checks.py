@@ -32,7 +32,8 @@ def is_valid_session(session, filters):
     :rtype: bool
     """
     try:
-        if session["available_capacity"] <= 0:
+        min_capacity = filters.get("capacity", 1)
+        if session["available_capacity"] < min_capacity:
             return False
 
         if "age" in filters:
