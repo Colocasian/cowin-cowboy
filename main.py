@@ -23,6 +23,7 @@ import sys
 
 from appdirs import user_config_dir
 from pub_checker.check_slots import check_available_slots
+from filters import filter_available_centers
 from utils.json_utils import read_json_file
 
 if __name__ == "__main__":
@@ -57,15 +58,25 @@ if __name__ == "__main__":
     config = read_json_file(conf_file)
 
     if config is not None:
-        locations = config.get("locations")
-        if locations is not None:
+        available_centers = {}
+
+        if "locations" in config:
+            locations = config["locations"]
             logger.info("Checking API for available centers...")
             available_centers = check_available_slots(datetime.now(), locations)
-            print(dumps(available_centers, sort_keys=True, indent=2))
-            logger.info("{} centers are available".format(len(available_centers)))
         else:
             logger.error('"locations" key not found in config')
             sys.exit(1)
+
+        if "filters" in config:
+            filters = config.get("filters")
+            logger.info("Filtering centers according to info")
+            available_centers = filter_available_centers(available_centers, filters)
+        else:
+            logger.warning('No "filters" field found in config')
+
+        print(dumps(available_centers, sort_keys=True, indent=2))
+        logger.info("{} centers are available".format(len(available_centers)))
     else:
         logger.error(
             "Error while trying to find/parse config file at '{}'".format(conf_file)
