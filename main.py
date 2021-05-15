@@ -15,7 +15,7 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 from argparse import ArgumentParser
-from datetime import date
+from datetime import date, timedelta
 from json import dumps, load, JSONDecodeError
 import logging
 from os import path
@@ -25,6 +25,7 @@ from os.path import isfile
 from appdirs import user_config_dir
 from cowin_cowboy.pub_checker import check_available_slots
 from cowin_cowboy.filters import filter_available_centers
+from cowin_cowboy.utils.api_utils import merge_center_dicts
 
 logger = logging.getLogger(__name__)
 
@@ -85,8 +86,15 @@ if __name__ == "__main__":
 
         if "locations" in config:
             locations = config["locations"]
+            weeks_to_check = max(1, config.get("weeks", 1))
+            date_today = date.today()
+
             logger.info("Checking API for available centers...")
-            available_centers = check_available_slots(date.today(), locations)
+            for i in range(0, weeks_to_check):
+                slots_this_week = check_available_slots(
+                    date_today + timedelta(weeks=i), locations
+                )
+                merge_center_dicts(available_centers, slots_this_week)
         else:
             logger.error('"locations" key not found in config')
             sys.exit(1)
