@@ -21,6 +21,7 @@ from cowin_cowboy.utils.api_utils import (
     check_for_pincode,
     check_for_district,
     check_for_center,
+    merge_center_dicts,
 )
 from cowin_cowboy.pub_checker._api_session import pub_api_session
 
@@ -47,13 +48,13 @@ def check_available_slots(date_obj, locations):
     if locations is not None:
         pincodes = locations.get("pincodes", [])
         for pincode in pincodes:
-            center_dict.update(check_for_pincode(date_str, pincode, pub_api_session))
+            pin_dict = check_for_pincode(date_str, pincode, pub_api_session)
+            merge_center_dicts(center_dict, pin_dict)
 
         district_ids = locations.get("district_ids", [])
         for district_id in district_ids:
-            center_dict.update(
-                check_for_district(date_str, district_id, pub_api_session)
-            )
+            district_dict = check_for_district(date_str, district_id, pub_api_session)
+            merge_center_dicts(center_dict, district_dict)
 
         center_ids = locations.get("center_ids", [])
         for center_id in center_ids:
@@ -61,5 +62,8 @@ def check_available_slots(date_obj, locations):
                 center_details = check_for_center(date_str, center_id, pub_api_session)
                 if center_details is not None:
                     center_dict[center_id] = center_details
+            center_details = check_for_center(date_str, center_id, pub_api_session)
+            if center_details is not None:
+                merge_center_dicts(center_dict, {center_id: center_details})
 
     return center_dict

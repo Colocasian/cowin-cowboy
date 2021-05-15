@@ -20,6 +20,7 @@ __all__ = [
     "check_for_pincode",
     "check_for_district",
     "check_for_center",
+    "merge_center_dicts",
 ]
 
 from enum import Enum, unique
@@ -155,3 +156,32 @@ def check_for_center(date_str, center_id, api_session):
         _logger.debug("Response:\n".format(r.content))
 
     return None
+
+
+def merge_center_dicts(cdict1, cdict2):
+    """Merges two center details dictionary into a single center details
+    dictionary. Like a set union for the dicts, but if a center is
+    present in both dicts, then merges their sessions, similar to a set
+    union.
+
+    :param cdict1: a center details dict
+    :type cdict1: dict[int, dict]
+    :param cdict2: another center details dict
+    :type cdict2: dict[int, dict]
+    :return: `cdict1`, with all members of `cdict2` merged into it
+    :rtype: dict[int, dict]
+    """
+    for center_id, center_details in cdict2.items():
+        try:
+            if center_id not in cdict1:
+                cdict1[center_id] = center_details
+            else:
+                for sess2 in center_details["sessions"]:
+                    for sess1 in cdict1[center_id]["sessions"]:
+                        if sess2["session_id"] == sess1["session_id"]:
+                            break
+                    else:
+                        cdict1[center_id]["sessions"].append(sess2)
+        except KeyError:
+            _logger.error("some required field not found")
+    return cdict1
