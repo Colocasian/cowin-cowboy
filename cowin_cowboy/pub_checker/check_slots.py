@@ -16,6 +16,8 @@
 
 __all__ = ["check_available_slots"]
 
+from logging import getLogger
+
 from cowin_cowboy.utils.api_utils import (
     date_to_string,
     check_for_pincode,
@@ -24,6 +26,8 @@ from cowin_cowboy.utils.api_utils import (
     merge_center_dicts,
 )
 from cowin_cowboy.pub_checker._api_session import pub_api_session
+
+_logger = getLogger(__name__)
 
 
 def check_available_slots(date_obj, locations):
@@ -44,6 +48,7 @@ def check_available_slots(date_obj, locations):
     """
     center_dict = {}
     date_str = date_to_string(date_obj)
+    _logger.info("Checking available slots for date {}".format(date_str))
 
     if locations is not None:
         pincodes = locations.get("pincodes", [])
