@@ -16,15 +16,40 @@
 
 from argparse import ArgumentParser
 from datetime import date
-from json import dumps
+from json import dumps, load, JSONDecodeError
 import logging
 from os import path
 import sys
+from os.path import isfile
 
 from appdirs import user_config_dir
 from cowin_cowboy.pub_checker import check_available_slots
 from cowin_cowboy.filters import filter_available_centers
-from cowin_cowboy.utils.json_utils import read_json_file
+
+logger = logging.getLogger(__name__)
+
+
+def read_json_file(json_file):
+    """Reads the config file, and returns the object
+    :param json_file: location of config file
+    :type json_file: os.PathLike
+    :return: Decoded config file, as a dictionary
+    :rtype: dict
+    """
+    if isfile(json_file):
+        try:
+            with open(json_file) as conf_fp:
+                data = load(conf_fp)
+                return data
+        except JSONDecodeError:
+            logger.error("Could not decode config file '{}'".format(json_file))
+        except IOError:
+            logger.error("Could not open file '{}'".format(json_file))
+    else:
+        logger.error("No file found at '{}'".format(json_file))
+
+    return None
+
 
 if __name__ == "__main__":
     parser = ArgumentParser(
@@ -40,8 +65,6 @@ if __name__ == "__main__":
     parser.add_argument("-c", "--config", help="path to custom config file")
 
     args = parser.parse_args()
-
-    logger = logging.getLogger(__name__)
 
     numeric_level = getattr(logging, args.log.upper(), None)
     if not isinstance(numeric_level, int):
