@@ -5,6 +5,13 @@ Python utility to check for available COVID-19 vaccination slots.
 Note, that this is just a hobby project I wrote to learn the ins-and-outs of
 Python. But I do hope to keep the scripts up-to-date.
 
+The project consists of two parts. One is the `cowin_cowboy` module, which
+contains the utility function for easy communication with the Co-WIN API, and
+easy handling of the response data, with features such as filtering session
+based on various criteria, etc. Second, is the `cowboy.py` script, which is
+a script which takes uses the `cowin_cowboy` module, and forms a user-friendly
+endpoint, which can be used to check for vaccination slots.
+
 ## Requirements
 
 `cowin_cowboy` module requires Python>=3.5 for running. For running Black,
