@@ -1,4 +1,4 @@
-# main.py -- main user interface for cowin-cowboy
+# cowboy.py -- main user interface for cowin-cowboy
 # Copyright (C) 2021  Rishvic Pushpakaran
 
 # This program is free software: you can redistribute it and/or modify
@@ -54,7 +54,7 @@ def read_json_file(json_file):
 
 if __name__ == "__main__":
     parser = ArgumentParser(
-        prog="cowin-cowboy",
+        prog="cowboy.py",
         description="Checks for available vaccination slots via Co-WIN API",
     )
     parser.add_argument(
@@ -64,6 +64,11 @@ if __name__ == "__main__":
         help="set logging verbosity (defaults to ERROR)",
     )
     parser.add_argument("-c", "--config", help="path to custom config file")
+    parser.add_argument(
+        "--config-path",
+        action="store_true",
+        help="prints expected path of config file and exits",
+    )
 
     args = parser.parse_args()
 
@@ -78,6 +83,11 @@ if __name__ == "__main__":
     if conf_file is None:
         conf_dir = user_config_dir("cowin-cowboy", "Colocasian")
         conf_file = path.join(conf_dir, "config.json")
+
+    if args.config_path:
+        logger.info("Printing expected path of config file")
+        print(conf_file)
+        sys.exit(0)
     logger.info("Parsing config file '{}'...".format(conf_file))
     config = read_json_file(conf_file)
 
