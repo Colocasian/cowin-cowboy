@@ -18,8 +18,8 @@ then install the dependencies.
 python -m venv venv
 # For sourcing in *nix for bash/zsh
 source ./venv/bin/activate
-# For sourcing in Windows using cmd.exe
-./venv/bin/activate.bat
+# For sourcing in Windows using PowerShell
+.\venv\Scripts\activate.ps1
 
 # To install cowboy.py dependencies
 python -m pip install -r requirements.txt
@@ -36,17 +36,20 @@ pre-commit install
 
 ## Usage
 
-To use the `cowboy.py` script, simply run `python3 ./cowboy.py`
+To use the `cowboy.py` script, simply run `python ./cowboy.py`
 
 Optionally, you can specify logging verbosity by `-l <log-level>`. You can
 also point the script to a custom config file with `-c <path/to/config`.
 
-To see all available options, do `python3 ./cowboy.py -h`
+To see all available options, do `python ./cowboy.py -h`
 
 ## Configuration
 
 `cowboy.py` expects a json file (the default config path can be queried by
-`python3 ./cowboy.py --config-path`), with the following structure:
+`python ./cowboy.py --config-path`), with the following structure:
+
+- A `"weeks"` field, with the number of weeks to check from the current date.
+  If not specified, checks for one week by default.
 
 - A `"locations"` table, with any combination of these three sub-keys:
   * `"pincodes"`: Array of PIN codes, as strings.
@@ -72,6 +75,7 @@ All the fields are optional, except atleast one location needs to be specified.
 
 ```json
 {
+  "weeks": 2,
   "locations": {
     "pincodes": ["787349", "312244", "763257"],
     "district_ids": [591, 218]
