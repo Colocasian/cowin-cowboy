@@ -33,8 +33,25 @@ def is_valid_session(session, filters):
     """
     try:
         min_capacity = filters.get("capacity", 1)
-        if session["available_capacity"] < min_capacity:
-            return False
+        if isinstance(min_capacity, int):
+            if session["available_capacity"] < min_capacity:
+                return False
+        else:
+            dose1 = min_capacity.get("dose1", 0)
+            dose2 = min_capacity.get("dose2", 0)
+            if session["available_capacity"] < dose1 + dose2:
+                return False
+
+            if (
+                "available_capacity_dose1" in session
+                and session["available_capacity_dose1"] < dose1
+            ):
+                return False
+            if (
+                "available_capacity_dose2" in session
+                and session["available_capacity_dose2"] < dose1
+            ):
+                return False
 
         if "age" in filters:
             if filters["age"] < session["min_age_limit"]:
